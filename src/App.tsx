@@ -5,8 +5,9 @@ import { About } from './components/About';
 import { Projects } from './components/Projects';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
-import { AmbientLight } from './components/AmbientLight';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { CursorTrail } from './components/CursorTrail';
+import { NeonBackground } from './components/NeonBackground';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,7 +15,8 @@ function App() {
   return (
     <ErrorBoundary>
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300 relative">
-        <AmbientLight />
+        <NeonBackground />
+        <CursorTrail />
         <Header isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
         <main className="relative z-10">
           <Hero />

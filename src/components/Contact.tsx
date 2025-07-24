@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Linkedin, Github, Twitter, Send, MessageCircle, Calendar } from 'lucide-react';
+import { Mail, Phone, MapPin, Linkedin, Github, Twitter, Send, MessageCircle, Calendar, CheckCircle, AlertCircle } from 'lucide-react';
 import { NeuButton } from './NeuButton';
 
 interface ContactMethod {
@@ -19,6 +19,8 @@ export const Contact: React.FC = () => {
     subject: '',
     message: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   const contactMethods: ContactMethod[] = [
     {
@@ -47,16 +49,29 @@ export const Contact: React.FC = () => {
     }
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the form data to your backend
-    alert('Thank you for your message! I\'ll get back to you soon.');
-    setFormData({ name: '', email: '', subject: '', message: '' });
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    // Simulate form submission
+    try {
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      setSubmitStatus('success');
+      setFormData({ name: '', email: '', subject: '', message: '' });
+    } catch (error) {
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   const nextSlide = () => {
@@ -71,12 +86,12 @@ export const Contact: React.FC = () => {
     <section id="contact" className="py-16 sm:py-20 px-4 sm:px-6">
       <div className="container mx-auto max-w-6xl">
         <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-teal-500 via-cyan-500 via-blue-500 to-indigo-500 bg-clip-text text-transparent drop-shadow-[0_0_12px_rgba(255,255,255,0.4)] dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.6)] animate-pulse">
+          <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-[#2563eb] via-[#38bdf8] to-[#1e293b] dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent drop-shadow-[0_0_12px_rgba(37,99,235,0.18)] dark:drop-shadow-[0_0_12px_rgba(96,165,250,0.6)] animate-pulse">
             Get In Touch
           </h2>
-          <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto mt-4">
-            I'm always open to discussing new opportunities, interesting projects, 
-            or just having a conversation about technology and innovation.
+          <p className="text-lg sm:text-xl text-[#334155] dark:text-gray-300 max-w-3xl mx-auto mt-4">
+            I'm always interested in new opportunities and collaborations. 
+            Feel free to reach out if you'd like to discuss a project or just say hello!
           </p>
         </div>
 
@@ -84,16 +99,16 @@ export const Contact: React.FC = () => {
           {/* Contact Methods Carousel */}
           <div className="space-y-8">
             <div className="relative">
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-neu p-6 sm:p-8 min-h-[280px] sm:min-h-[300px]">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-neu p-6 sm:p-8 min-h-[280px] sm:min-h-[300px] border border-[#e0e7ef] dark:border-gray-700">
                 <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-xl bg-gradient-to-br ${contactMethods[activeSlide].color} flex items-center justify-center text-white mb-4 sm:mb-6`}>
                   {contactMethods[activeSlide].icon}
                 </div>
                 
-                <h3 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent drop-shadow-[0_0_8px_rgba(255,255,255,0.4)] dark:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)] mb-4">
+                <h3 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-[#2563eb] via-[#38bdf8] to-[#1e293b] dark:from-pink-500 dark:via-purple-500 dark:to-indigo-500 bg-clip-text text-transparent drop-shadow-[0_0_8px_rgba(37,99,235,0.12)] dark:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)] mb-4">
                   {contactMethods[activeSlide].title}
                 </h3>
                 
-                <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base mb-4 sm:mb-6">
+                <p className="text-[#334155] dark:text-gray-400 text-sm sm:text-base mb-4 sm:mb-6">
                   {contactMethods[activeSlide].description}
                 </p>
                 
@@ -148,8 +163,8 @@ export const Contact: React.FC = () => {
             </div>
 
             {/* Social Links */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-neu p-6">
-              <h4 className="text-base sm:text-lg font-semibold bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 bg-clip-text text-transparent drop-shadow-[0_0_6px_rgba(255,255,255,0.3)] dark:drop-shadow-[0_0_6px_rgba(255,255,255,0.5)] mb-4">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-neu p-6 border border-[#e0e7ef] dark:border-gray-700">
+              <h4 className="font-semibold text-[#1e293b] dark:text-white text-sm sm:text-base mb-2">
                 Connect With Me
               </h4>
               <div className="flex space-x-3 sm:space-x-4">
@@ -182,16 +197,16 @@ export const Contact: React.FC = () => {
           </div>
 
           {/* Contact Form */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-neu p-6 sm:p-8">
-            <h3 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 bg-clip-text text-transparent drop-shadow-[0_0_8px_rgba(255,255,255,0.4)] dark:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)] mb-6">
-              Send Message
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-neu p-6 sm:p-8 border border-[#e0e7ef] dark:border-gray-700">
+            <h3 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-[#2563eb] via-[#38bdf8] to-[#1e293b] dark:from-indigo-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent drop-shadow-[0_0_8px_rgba(37,99,235,0.12)] dark:drop-shadow-[0_0_8px_rgba(129,140,248,0.6)] mb-6">
+              Send a Message
             </h3>
             
-            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Your Name
+                  <label htmlFor="name" className="block text-sm font-medium text-[#334155] dark:text-gray-300 mb-2">
+                    Name
                   </label>
                   <input
                     type="text"
@@ -200,14 +215,14 @@ export const Contact: React.FC = () => {
                     value={formData.name}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#33ffda] focus:border-transparent transition-all duration-200 text-sm sm:text-base"
-                    placeholder="Enter your name"
+                    className="w-full px-4 py-3 rounded-xl border border-[#e0e7ef] dark:border-gray-600 bg-white dark:bg-gray-700 text-[#1e293b] dark:text-white placeholder-[#94a3b8] dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition-colors"
+                    placeholder="Your name"
                   />
                 </div>
                 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Your Email
+                  <label htmlFor="email" className="block text-sm font-medium text-[#334155] dark:text-gray-300 mb-2">
+                    Email
                   </label>
                   <input
                     type="email"
@@ -216,14 +231,14 @@ export const Contact: React.FC = () => {
                     value={formData.email}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#33ffda] focus:border-transparent transition-all duration-200 text-sm sm:text-base"
-                    placeholder="Enter your email"
+                    className="w-full px-4 py-3 rounded-xl border border-[#e0e7ef] dark:border-gray-600 bg-white dark:bg-gray-700 text-[#1e293b] dark:text-white placeholder-[#94a3b8] dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition-colors"
+                    placeholder="your.email@example.com"
                   />
                 </div>
               </div>
               
               <div>
-                <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label htmlFor="subject" className="block text-sm font-medium text-[#334155] dark:text-gray-300 mb-2">
                   Subject
                 </label>
                 <input
@@ -233,13 +248,13 @@ export const Contact: React.FC = () => {
                   value={formData.subject}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#33ffda] focus:border-transparent transition-all duration-200 text-sm sm:text-base"
+                  className="w-full px-4 py-3 rounded-xl border border-[#e0e7ef] dark:border-gray-600 bg-white dark:bg-gray-700 text-[#1e293b] dark:text-white placeholder-[#94a3b8] dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition-colors"
                   placeholder="What's this about?"
                 />
               </div>
               
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label htmlFor="message" className="block text-sm font-medium text-[#334155] dark:text-gray-300 mb-2">
                   Message
                 </label>
                 <textarea
@@ -249,17 +264,41 @@ export const Contact: React.FC = () => {
                   onChange={handleInputChange}
                   required
                   rows={5}
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#33ffda] focus:border-transparent transition-all duration-200 resize-none text-sm sm:text-base"
+                  className="w-full px-4 py-3 rounded-xl border border-[#e0e7ef] dark:border-gray-600 bg-white dark:bg-gray-700 text-[#1e293b] dark:text-white placeholder-[#94a3b8] dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition-colors resize-none"
                   placeholder="Tell me about your project or just say hello!"
                 />
               </div>
-              
+
+              {/* Submit Status */}
+              {submitStatus === 'success' && (
+                <div className="flex items-center space-x-2 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl">
+                  <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
+                  <span className="text-green-800 dark:text-green-200 text-sm font-medium">
+                    Message sent successfully! I'll get back to you soon.
+                  </span>
+                </div>
+              )}
+
+              {submitStatus === 'error' && (
+                <div className="flex items-center space-x-2 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl">
+                  <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400" />
+                  <span className="text-red-800 dark:text-red-200 text-sm font-medium">
+                    Something went wrong. Please try again.
+                  </span>
+                </div>
+              )}
+
               <NeuButton
                 type="submit"
-                className="w-full bg-gradient-to-r from-teal-600 via-cyan-700 to-blue-800 text-white border-none flex items-center justify-center space-x-2"
+                disabled={isSubmitting}
+                className="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-500 dark:via-indigo-500 dark:to-purple-500 text-white border-none hover:scale-105"
               >
-                <Send className="w-4 h-4" />
-                <span>Send Message</span>
+                {isSubmitting ? (
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <Send className="w-4 h-4" />
+                )}
+                <span>{isSubmitting ? 'Sending...' : 'Send Message'}</span>
               </NeuButton>
             </form>
           </div>
