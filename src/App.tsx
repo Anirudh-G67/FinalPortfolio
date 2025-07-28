@@ -14,7 +14,7 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300 relative">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300 relative dark">
         <NeonBackground />
         <CursorTrail />
         <Header isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
