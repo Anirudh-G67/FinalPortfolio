@@ -38,44 +38,31 @@ export const CursorTrail: React.FC = () => {
   if (trail.length === 0) return null;
 
   if (isDarkMode) {
-    // Lightning effect in dark mode
-    if (trail.length < 2) return null;
-    function lightningPath(x1: number, y1: number, x2: number, y2: number, segments = 4, seed = 0) {
-      const points = [{ x: x1, y: y1 }];
-      for (let i = 1; i < segments; i++) {
-        const t = i / segments;
-        const angle = Math.atan2(y2 - y1, x2 - x1) + Math.PI / 2;
-        const offset = Math.sin(seed + i) * 12 * (1 - Math.abs(0.5 - t));
-        const nx = x1 + (x2 - x1) * t + Math.cos(angle) * offset;
-        const ny = y1 + (y2 - y1) * t + Math.sin(angle) * offset;
-        points.push({ x: nx, y: ny });
-      }
-      points.push({ x: x2, y: y2 });
-      return points;
-    }
+    // Dots effect in dark mode
     return (
-      <svg style={{ position: 'fixed', left: 0, top: 0, width: '100vw', height: '100vh', pointerEvents: 'none', zIndex: 2147483647 }}>
-        {trail.slice(0, trail.length - 1).map((point, i) => {
-          const next = trail[i + 1];
-          if (!next) return null;
-          const color = point.color;
-          const pathPoints = lightningPath(point.x, point.y, next.x, next.y, 4, i);
-          const pathData = pathPoints.map((p, idx) => idx === 0 ? `M${p.x},${p.y}` : `L${p.x},${p.y}`).join(' ');
-          return (
-            <path
-              key={i}
-              d={pathData}
-              stroke={color}
-              strokeWidth={2.5 - i * (1.5 / TRAIL_LENGTH)}
-              strokeLinejoin="round"
-              strokeLinecap="round"
-              opacity={0.7 - i * (0.5 / TRAIL_LENGTH)}
-              filter={`drop-shadow(0 0 12px ${color})`}
-              fill="none"
-            />
-          );
-        })}
-      </svg>
+      <>
+        {trail.map((dot, i) => (
+          <span
+            key={i}
+            style={{
+              position: 'fixed',
+              left: dot.x - 8,
+              top: dot.y - 8,
+              width: `${16 - i * 0.8}px`,
+              height: `${16 - i * 0.8}px`,
+              borderRadius: '50%',
+              background: dot.color,
+              opacity: 0.8 - i * (0.6 / TRAIL_LENGTH),
+              pointerEvents: 'none',
+              zIndex: 2147483647,
+              filter: `drop-shadow(0 0 8px ${dot.color})`,
+              transition: 'left 0.1s, top 0.1s, opacity 0.2s',
+              userSelect: 'none',
+              display: 'inline-block',
+            }}
+          />
+        ))}
+      </>
     );
   } else {
     // Shining stars effect in light mode
